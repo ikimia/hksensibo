@@ -27,7 +27,7 @@ func NewAccessory(podID string, api *api.API) *hca.Accessory {
 		return pa.GetPod().Room.Name
 	})
 
-	acc.AddService(thermostat.NewService((pa)))
+	acc.AddService(thermostat.NewService(pa))
 	acc.AddService(fan.NewService(pa))
 
 	return acc
