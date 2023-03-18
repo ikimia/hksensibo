@@ -7,16 +7,10 @@ import (
 )
 
 type apiResponse struct {
-	Status  string  `json:"status"`
-	Reason  string  `json:"reason"`
-	Message string  `json:"message"`
-	Result  dynamic `json:"result"`
-}
-
-type dynamic struct{ v interface{} }
-
-func (d *dynamic) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, d.v)
+	Status  string      `json:"status"`
+	Reason  string      `json:"reason"`
+	Message string      `json:"message"`
+	Result  interface{} `json:"result"`
 }
 
 func doRequest(req *http.Request, result interface{}) error {
@@ -26,7 +20,7 @@ func doRequest(req *http.Request, result interface{}) error {
 	}
 
 	defer resp.Body.Close()
-	res := &apiResponse{Result: dynamic{result}}
+	res := &apiResponse{Result: result}
 	err = json.NewDecoder(resp.Body).Decode(res)
 
 	if res.Status == "failed" {
